@@ -7,16 +7,22 @@ import java.util.Objects;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.CreativeModeTab;
-import net.neoforged.neoforge.client.gui.CreativeTabsScreenPage;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.neoforged.neoforge.common.CreativeModeTabRegistry;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(CreativeTabsScreenPage.class)
+@Mixin(CreativeModeInventoryScreen.class)
 public class CreativeTabsScreenPageMixin {
-    @ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)
-    private static List<CreativeModeTab> sortModdedTabs(List<CreativeModeTab> tabs) {
+    @Redirect(method = "init", at = @At(
+            value = "INVOKE",
+            target = "Lnet/neoforged/neoforge/common/CreativeModeTabRegistry;getSortedCreativeModeTabs()Ljava/util/List;"
+    ))
+
+    private static List<CreativeModeTab> sortModdedTabs() {
+        List<CreativeModeTab> tabs = CreativeModeTabRegistry.getSortedCreativeModeTabs();
         List<CreativeModeTab> sortedTabs = new ArrayList<>(tabs);
         List<CreativeModeTab> moddedTabs = sortedTabs.stream()
                 .filter(CreativeTabsScreenPageMixin::isModded)
