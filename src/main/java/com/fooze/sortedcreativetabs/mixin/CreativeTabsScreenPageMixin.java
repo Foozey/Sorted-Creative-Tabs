@@ -21,9 +21,13 @@ public class CreativeTabsScreenPageMixin {
             target = "Lnet/neoforged/neoforge/common/CreativeModeTabRegistry;getSortedCreativeModeTabs()Ljava/util/List;"
     ))
 
+    // Sorts modded tabs in alphabetical order by title, then by registry name
     private static List<CreativeModeTab> sortModdedTabs() {
         List<CreativeModeTab> tabs = CreativeModeTabRegistry.getSortedCreativeModeTabs();
         List<CreativeModeTab> sortedTabs = new ArrayList<>(tabs);
+        int tabIndex = 0;
+
+        // Sort by title first, then registry name
         List<CreativeModeTab> moddedTabs = sortedTabs.stream()
                 .filter(CreativeTabsScreenPageMixin::isModded)
                 .sorted(Comparator
@@ -32,26 +36,29 @@ public class CreativeTabsScreenPageMixin {
                         .thenComparing(CreativeTabsScreenPageMixin::registryName))
                 .toList();
 
-        int moddedTabIndex = 0;
 
-        for (int i = 0; i < sortedTabs.size(); i++) {
+        // Replace the default modded tab order with the sorted order
+        for (int i = 0; i < sortedTabs.size(); i = i + 1) {
             if (isModded(sortedTabs.get(i))) {
-                sortedTabs.set(i, moddedTabs.get(moddedTabIndex++));
+                sortedTabs.set(i, moddedTabs.get(tabIndex = tabIndex + 1));
             }
         }
 
         return sortedTabs;
     }
 
+    // Identifies tabs registered outside the vanilla namespace
     private static boolean isModded(CreativeModeTab tab) {
         var key = BuiltInRegistries.CREATIVE_MODE_TAB.getKey(tab);
         return key != null && !key.getNamespace().equals("minecraft");
     }
 
+    // Gets the tab title
     private static String displayName(CreativeModeTab tab) {
         return tab.getDisplayName().getString();
     }
 
+    // Gets the tab registry name
     private static String registryName(CreativeModeTab tab) {
         return Objects.requireNonNull(BuiltInRegistries.CREATIVE_MODE_TAB.getKey(tab)).toString();
     }
