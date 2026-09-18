@@ -34,6 +34,8 @@ bin/
 
 ### Minecraft Modding ###
 run/
+fabric/runs/
+neoforge/runs/
 !**/src/**/run/
 **/src/generated/**/.cache/
 repo/

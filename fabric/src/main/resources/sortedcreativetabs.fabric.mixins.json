@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.fooze.sortedcreativetabs.mixin",
+  "compatibilityLevel": "JAVA_${java_version}",
+  "client": [
+    "CreativeTabsScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
