@@ -13,8 +13,15 @@ import java.util.List;
 
 @Mixin(CreativeModeInventoryScreen.class)
 public class CreativeTabsScreenMixin {
-    @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/common/CreativeModeTabRegistry;getSortedCreativeModeTabs()Ljava/util/List;"))
+    @Redirect(method = "init", at = @At(
+            value = "INVOKE",
+            target = "Lnet/neoforged/neoforge/common/CreativeModeTabRegistry;getSortedCreativeModeTabs()Ljava/util/List;"
+    ))
+
     private static List<CreativeModeTab> sortModdedTabs() {
-        return SortedCreativeTabs.sortModdedTabs(CreativeModeTabRegistry.getSortedCreativeModeTabs(), Config.get().enableSorting());
+        return SortedCreativeTabs.sortModdedTabs(
+                CreativeModeTabRegistry.getSortedCreativeModeTabs(),
+                Config.get().enableSorting()
+        );
     }
 }

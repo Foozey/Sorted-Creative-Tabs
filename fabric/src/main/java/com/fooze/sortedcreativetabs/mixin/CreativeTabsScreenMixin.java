@@ -13,8 +13,15 @@ import java.util.List;
 
 @Mixin(CreativeModeInventoryScreen.class)
 public class CreativeTabsScreenMixin {
-    @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/CreativeModeTabs;tabs()Ljava/util/List;"))
+    @Redirect(method = "*", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/item/CreativeModeTabs;tabs()Ljava/util/List;")
+    )
+
     private static List<CreativeModeTab> sortModdedTabs() {
-        return SortedCreativeTabs.sortModdedTabs(CreativeModeTabs.tabs(), Config.get().enableSorting());
+        return SortedCreativeTabs.sortModdedTabs(
+                CreativeModeTabs.tabs(),
+                Config.get().enableSorting()
+        );
     }
 }
