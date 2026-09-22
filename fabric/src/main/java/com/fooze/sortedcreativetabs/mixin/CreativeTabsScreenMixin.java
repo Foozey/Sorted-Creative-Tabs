@@ -1,7 +1,7 @@
 package com.fooze.sortedcreativetabs.mixin;
 
 import com.fooze.sortedcreativetabs.Config;
-import com.fooze.sortedcreativetabs.SortedCreativeTabs;
+import com.fooze.sortedcreativetabs.feature.SortTabs;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -15,13 +15,9 @@ import java.util.List;
 public class CreativeTabsScreenMixin {
     @Redirect(method = "*", at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/item/CreativeModeTabs;tabs()Ljava/util/List;")
-    )
-
-    private static List<CreativeModeTab> sortModdedTabs() {
-        return SortedCreativeTabs.sortModdedTabs(
-                CreativeModeTabs.tabs(),
-                Config.get().enableSorting()
-        );
+            target = "Lnet/minecraft/world/item/CreativeModeTabs;tabs()Ljava/util/List;"
+    ))
+    private static List<CreativeModeTab> sort() {
+        return SortTabs.sort(CreativeModeTabs.tabs(), Config.get().enableSorting());
     }
 }

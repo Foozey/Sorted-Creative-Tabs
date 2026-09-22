@@ -1,7 +1,7 @@
 package com.fooze.sortedcreativetabs.mixin;
 
 import com.fooze.sortedcreativetabs.Config;
-import com.fooze.sortedcreativetabs.SortedCreativeTabs;
+import com.fooze.sortedcreativetabs.feature.SortTabs;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.common.CreativeModeTabRegistry;
@@ -17,11 +17,7 @@ public class CreativeTabsScreenMixin {
             value = "INVOKE",
             target = "Lnet/neoforged/neoforge/common/CreativeModeTabRegistry;getSortedCreativeModeTabs()Ljava/util/List;"
     ))
-
-    private static List<CreativeModeTab> sortModdedTabs() {
-        return SortedCreativeTabs.sortModdedTabs(
-                CreativeModeTabRegistry.getSortedCreativeModeTabs(),
-                Config.get().enableSorting()
-        );
+    private static List<CreativeModeTab> sort() {
+        return SortTabs.sort(CreativeModeTabRegistry.getSortedCreativeModeTabs(), Config.get().enableSorting());
     }
 }
